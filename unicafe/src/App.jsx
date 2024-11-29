@@ -7,11 +7,18 @@ const Otsikko = ({ text }) => {
 }
 
 const Staticstics = ({ good, neutral, bad }) => {
+  const all = good + neutral + bad
+  const avg = (1 * good) + (0 * neutral) + (-1 * bad) / all || 0 // Näyttää toimivan
+  const pospros = (good / all)*100 || 0
+
   return (
     <>
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {all}</p>
+      <p>average {avg}</p>
+      <p>positive {pospros} %</p>
     </>
   )
 }
