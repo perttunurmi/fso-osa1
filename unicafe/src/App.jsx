@@ -6,20 +6,42 @@ const Otsikko = ({ text }) => {
   )
 }
 
+const Button = ({ text, handler }) => {
+  return <button onClick={handler}>{text}</button>
+}
+
+const StaticsticLine = ({ text, value, text2 }) => {
+  return (
+    <tr>
+      <td> {text} </td>
+      <td> {value} {text2} </td>
+    </tr>
+  )
+}
+
 const Staticstics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad
-  const avg = (1 * good) + (0 * neutral) + (-1 * bad) / all || 0 // Näyttää toimivan
-  const pospros = (good / all)*100 || 0
+  if (all > 0) {
+    const avg = (good + (-1 * bad)) / all || 0 // Näyttää toimivan
+    console.log(avg)
+    const pospros = (good / all) * 100 || 0
+
+    return (
+      <table>
+        <tbody>
+          <StaticsticLine text="good" value={good} />
+          <StaticsticLine text="neutral" value={neutral} />
+          <StaticsticLine text="bad" value={bad} />
+          <StaticsticLine text="all" value={all} />
+          <StaticsticLine text="average" value={avg} />
+          <StaticsticLine text="positive" value={pospros} text2="%" />
+        </tbody>
+      </table>
+    )
+  }
 
   return (
-    <>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <p>average {avg}</p>
-      <p>positive {pospros} %</p>
-    </>
+    <p>No feedback given</p>
   )
 }
 
@@ -29,12 +51,24 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  const handleGood = () => {
+    setGood(good + 1)
+  }
+
+  const handleNeutral = () => {
+    setNeutral(neutral + 1)
+  }
+
+  const handleBad = () => {
+    setBad(bad + 1)
+  }
+
   return (
     <div>
       <Otsikko text="give feedback" />
-      <button onClick={() => setGood(good + 1)} > good </button>
-      <button onClick={() => setNeutral(neutral + 1)} > neutral </button>
-      <button onClick={() => setBad(bad + 1)} > bad </button>
+      <Button text="good" handler={handleGood} />
+      <Button text="neutral" handler={handleNeutral} />
+      <Button text="bad" handler={handleBad} />
       <Otsikko text="statistics" />
       <Staticstics good={good} neutral={neutral} bad={bad} />
     </div>
